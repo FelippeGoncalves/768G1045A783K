@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Times de Vôlei</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://www.example.com/volleyball-bg.jpg'); /* Substitua pelo URL de uma imagem de fundo apropriada */
+            background-size: cover;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #ff6f61;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff3b3b;
+        }
+        .teams {
+            margin-top: 20px;
+            text-align: left;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Times de Vôlei</h1>
+        <input type="number" id="numTeams" placeholder="Número de times" min="1">
+        <textarea id="playerNames" rows="5" placeholder="Digite os nomes dos jogadores, separados por vírgula"></textarea>
+        <button onclick="generateTeams()">Gerar Times</button>
+        <div class="teams" id="teamOutput"></div>
+    </div>
+
+    <script>
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function generateTeams() {
+            const numTeams = parseInt(document.getElementById('numTeams').value);
+            const playerNames = document.getElementById('playerNames').value.split(',').map(name => name.trim());
+            const shuffledPlayers = shuffle(playerNames);
+            const teams = Array.from({ length: numTeams }, () => []);
+
+            shuffledPlayers.forEach((player, index) => {
+                teams[index % numTeams].push(player);
+            });
+
+            const teamOutput = document.getElementById('teamOutput');
+            teamOutput.innerHTML = '';
+            teams.forEach((team, index) => {
+                teamOutput.innerHTML += `<h3>Time ${index + 1}</h3><ul>${team.map(player => `<li>${player}</li>`).join('')}</ul>`;
+            });
+        }
+    </script>
+</body>
+</html>
